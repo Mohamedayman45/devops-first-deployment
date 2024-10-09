@@ -2,23 +2,13 @@
 - name: "run container with ansible"
   host: localhost
   connection: local
-
   tasks:
-  - name: stop current container
-   command: docker stop lo-fi-container
-   ignore-errors: yes
+    - name: stop current container
+      command: docker stop lo-fi-container
 
+    - name: remove current container
+      command: docker rm lo-fi-container
 
-  - name: delete current container
-   command: docker rm lo-fi-container
-   ignore-errors: yes
+    - name: run new container
+      command: docker run -d --name lo-fi-container -p 5000:80 lo-fi-img
 
-  - name: delete current img
-   command: docker rmi lo-fi-image
-   ignore-errors: yes
-
-  - name: build docker image to Lo-Fi
-   command: docker build -t lo-fi-container .
-
-  - name: create tag to image
-   command: docker run -d  --name web-container -p 5000:80 Lo-Fi-image
