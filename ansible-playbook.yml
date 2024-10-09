@@ -3,24 +3,28 @@
   connection: local
 
   tasks:
-    - name: stop current container
+    - name: stop current container if it exists
       command: docker stop lo-fi-container
       ignore_errors: yes
 
-    - name: delete current container
+    - name: delete current container if it exists
       command: docker rm lo-fi-container
       ignore_errors: yes
 
-    - name: delete existing web container
+    - name: stop existing web container if it exists
+      command: docker stop web-container
+      ignore_errors: yes
+
+    - name: delete existing web container if it exists
       command: docker rm web-container
       ignore_errors: yes
 
-    - name: delete current img
+    - name: delete current image if it exists
       command: docker rmi lo-fi-img
       ignore_errors: yes
 
     - name: build docker image to Lo-Fi
       command: docker build -t lo-fi-img .
 
-    - name: create tag to image
+    - name: create and run new web container
       command: docker run -d --name web-container -p 5000:80 lo-fi-img
